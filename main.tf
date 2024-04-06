@@ -8,20 +8,20 @@ terraform {
 }
 
 provider "snowflake" {
-  alias  = "sys_admin"
-  role   = "SYSADMIN"
+  alias = "sys_admin"
+  role  = "SYSADMIN"
 }
 
 resource "snowflake_database" "db" {
   provider = snowflake.sys_admin
-  name = "TF_DEMO"
+  name     = "TF_DEMO"
 }
 
 resource "snowflake_warehouse" "warehouse" {
-  provider = snowflake.sys_admin
+  provider       = snowflake.sys_admin
   name           = "TF_DEMO"
   warehouse_size = "xsmall"
-  auto_suspend   = 60
+  auto_suspend   = 90
 }
 
 provider "snowflake" {
@@ -50,10 +50,10 @@ resource "tls_private_key" "svc_key" {
 }
 
 resource "snowflake_user" "user" {
-    provider          = snowflake.security_admin
-    name              = "tf_demo_user"
-    default_role      = snowflake_role.role.name
-    rsa_public_key    = substr(tls_private_key.svc_key.public_key_pem, 27, 398)
+  provider       = snowflake.security_admin
+  name           = "tf_demo_user"
+  default_role   = snowflake_role.role.name
+  rsa_public_key = substr(tls_private_key.svc_key.public_key_pem, 27, 398)
 }
 
 resource "snowflake_grant_account_role" "grants" {
