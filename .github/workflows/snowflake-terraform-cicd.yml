@@ -30,7 +30,7 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4.0.2
         with:
           role-to-assume: arn:aws:iam::038919193538:role/sagara-terraform-snowflake-state--GitHubActionsRole-AZ2g3bKbKYH9
           aws-region: ap-northeast-1
