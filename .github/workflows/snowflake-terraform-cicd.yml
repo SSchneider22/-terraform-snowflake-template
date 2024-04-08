@@ -34,6 +34,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::038919193538:role/sagara-terraform-snowflake-state--GitHubActionsRole-AZ2g3bKbKYH9
           aws-region: ap-northeast-1
+          audience: sts.amazonaws.com
 
       - name: Terraform format
         run: terraform fmt -check -recursive
