@@ -1,7 +1,7 @@
 ## 実行する際に変更するところ
 # S3のバケット名：sagara-terraform-state-bucket-name
 # DynamoDBのテーブル名：sagara-terraform-state-lock-table
-# ブランチ名："repo:SSchneider22/terraform-snowflake-practice:ref:refs/heads/main"
+# ブランチ名："repo:SSchneider22/terraform-snowflake-practice:*"
 # Policy名：SagaraGitHubActionsPolicy
 
 AWSTemplateFormatVersion: '2010-09-09'
@@ -53,7 +53,6 @@ Resources:
               StringEquals:
                 token.actions.githubusercontent.com:aud: "sts.amazonaws.com"
               StringLike:
-                # Replace with your repository's owner and name
                 token.actions.githubusercontent.com:sub: "repo:SSchneider22/terraform-snowflake-practice:*"
       Policies:
         - PolicyName: SagaraTerraformGitHubActionsPolicy
