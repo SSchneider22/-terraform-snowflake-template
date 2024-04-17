@@ -1,33 +1,72 @@
-terraform {
-  required_providers {
-    snowflake = {
-      source  = "Snowflake-Labs/snowflake"
-      version = "~> 0.87"
-    }
-  }
+########################
+# ロール
+########################
 
-  backend "s3" {
-    bucket         = "sagara-terraform-state-bucket"
-    key            = "snowflake-state/snowflake.tfstate"
-    region         = "ap-northeast-1"
-    dynamodb_table = "sagara-terraform-state-lock-table"
-    encrypt        = true
-  }
-}
 
-provider "snowflake" {
-  alias = "sys_admin"
-  role  = "SYSADMIN"
-}
-
-resource "snowflake_database" "db" {
-  provider = snowflake.sys_admin
-  name     = "TF_DEMO"
-}
+########################
+# ウェアハウス
+########################
 
 resource "snowflake_warehouse" "warehouse" {
   provider       = snowflake.sys_admin
   name           = "TF_DEMO"
   warehouse_size = "xsmall"
   auto_suspend   = 120
+}
+
+########################
+# データベース
+########################
+
+resource "snowflake_database" "prd_db" {
+  provider = snowflake.sys_admin
+  name     = "PRD_DB"
+}
+
+########################
+# スキーマ
+########################
+
+resource "snowflake_schema" "schema_a" {
+  provider = snowflake.sys_admin
+  database = "PRD_DB"
+  name     = "SCHEMA_A"
+}
+
+resource "snowflake_schema" "schema_b" {
+  provider = snowflake.sys_admin
+  database = "PRD_DB"
+  name     = "SCHEMA_B"
+}
+
+########################
+# テーブル
+########################
+
+resource "snowflake_table" "table_a1" {
+  database = snowflake_database.prd_db.name
+  schema   = snowflake_schema.schema_a.name
+  name     = "TABLE_A1"
+  column {
+    name = "ID"
+    type = "INTEGER"
+  }
+  column {
+    name = "NAME"
+    type = "VARCHAR(255)"
+  }
+}
+
+resource "snowflake_table" "table_b1" {
+  database = snowflake_database.prd_db.name
+  schema   = snowflake_schema.schema_b.name
+  name     = "TABLE_B1"
+  column {
+    name = "ID"
+    type = "INTEGER"
+  }
+  column {
+    name = "NAME"
+    type = "VARCHAR(255)"
+  }
 }
