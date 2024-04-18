@@ -1,0 +1,77 @@
+access_roles:
+  - name: PRD_SCHEMA_A_READWRITE
+    comment: 本番環境データベースで SCHEMA_A スキーマに対して読み書き可能
+  - name: PRD_SCHEMA_A_READONLY
+    comment: 本番環境データベースで SCHEMA_A スキーマに対して読み取り可能
+  - name: PRD_SCHEMA_B_READWRITE
+    comment: 本番環境データベースで SCHEMA_B スキーマに対して読み書き可能
+  - name: PRD_SCHEMA_B_READONLY
+    comment: 本番環境データベースで SCHEMA_B スキーマに対して読み取り可能
+  - name: PRD_WAREHOUSE_USAGE
+    comment: 本番環境用ウェアハウスを使用可能
+grant_on_object_to_access_role:
+  - name: DATABASE_PRD_DB_USAGE
+    type: DATABASE
+    parameter:
+      database_name: PRD_DB
+      privilege: USAGE
+    roles:
+      - PRD_SCHEMA_A_READWRITE
+      - PRD_SCHEMA_A_READONLY
+      - PRD_SCHEMA_B_READWRITE
+      - PRD_SCHEMA_B_READONLY
+  - name: SCHEMA_PRD_DB_SCHEMA_A_USAGE
+    type: SCHEMA
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      privilege: USAGE
+    roles:
+      - PRD_SCHEMA_A_READWRITE
+      - PRD_SCHEMA_A_READONLY
+  - name: SCHEMA_PRD_DB_SCHEMA_B_USAGE
+    type: SCHEMA
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_B
+      privilege: USAGE
+    roles:
+      - PRD_SCHEMA_B_READWRITE
+      - PRD_SCHEMA_B_READONLY
+  - name: TABLE_PRD_DB_SCHEMA_A_SELECT_ON_FUTURE
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      privilege: SELECT
+      on_future: true
+    roles:
+      - PRD_SCHEMA_A_READWRITE
+      - PRD_SCHEMA_A_READONLY
+  - name: TABLE_PRD_DB_SCHEMA_A_INSERT_ON_FUTURE
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      privilege: INSERT
+      on_future: true
+    roles:
+      - PRD_SCHEMA_A_READWRITE
+  - name: TABLE_PRD_DB_SCHEMA_A_UPDATE_ON_FUTURE
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      privilege: UPDATE
+      on_future: true
+    roles:
+      - PRD_SCHEMA_A_READWRITE
+  - name: TABLE_PRD_DB_SCHEMA_A_DELETE_ON_FUTURE
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      privilege: DELETE
+      on_future: true
+    roles:
+      - PRD_SCHEMA_A_READWRITE
