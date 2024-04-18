@@ -1,4 +1,9 @@
 locals {
+
+  ########################
+  # ロール
+  ########################
+
   # 設定ファイルをロード
   access_roles_yml = yamldecode(
     file("${path.root}/yaml/roles/access_roles.yml")
@@ -13,7 +18,8 @@ locals {
   )
 
   # Access role のリスト
-  access_roles = flatten(local.access_roles_yml["access_roles"])
+  # access_roles = flatten(local.access_roles_yml["access_roles"])
+  access_roles = local.access_roles_yml.access_roles
 
   # grant ... on objects to Access role のリスト
   grant_on_object_to_access_role = flatten(local.access_roles_yml["grant_on_object_to_access_role"])

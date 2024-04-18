@@ -40,15 +40,17 @@ resource "snowflake_database" "prd_db" {
 ########################
 
 resource "snowflake_schema" "schema_a" {
-  provider = snowflake.sys_admin
-  database = "PRD_DB"
-  name     = "SCHEMA_A"
+  provider   = snowflake.sys_admin
+  database   = "PRD_DB"
+  name       = "SCHEMA_A"
+  depends_on = [snowflake_database.prd_db]
 }
 
 resource "snowflake_schema" "schema_b" {
-  provider = snowflake.sys_admin
-  database = "PRD_DB"
-  name     = "SCHEMA_B"
+  provider   = snowflake.sys_admin
+  database   = "PRD_DB"
+  name       = "SCHEMA_B"
+  depends_on = [snowflake_database.prd_db]
 }
 
 ########################
@@ -61,7 +63,7 @@ resource "snowflake_table" "table_a1" {
   name     = "TABLE_A1"
   column {
     name = "ID"
-    type = "INTEGER"
+    type = "NUMBER(38,0)"
   }
   column {
     name = "NAME"
@@ -75,7 +77,7 @@ resource "snowflake_table" "table_b1" {
   name     = "TABLE_B1"
   column {
     name = "ID"
-    type = "INTEGER"
+    type = "NUMBER(38,0)"
   }
   column {
     name = "NAME"
