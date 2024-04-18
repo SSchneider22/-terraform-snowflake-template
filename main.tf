@@ -1,21 +1,4 @@
 ########################
-# ロール
-########################
-# Functional roleとAccess roleを作成
-module "functional_and_access_roles" {
-  source = "./modules/roles"
-  providers = {
-    snowflake = snowflake.security_admin
-  }
-
-  access_roles                           = local.access_roles
-  grant_on_object_to_access_role         = local.grant_on_object_to_access_role
-  functional_roles                       = local.functional_roles
-  grant_access_roles_to_functional_roles = local.grant_access_role_to_functional_role
-  grant_functional_roles_to_user         = local.grant_functional_roles_to_user
-}
-
-########################
 # ウェアハウス
 ########################
 
@@ -83,4 +66,23 @@ resource "snowflake_table" "table_b1" {
     name = "NAME"
     type = "VARCHAR(255)"
   }
+}
+
+
+########################
+# ロール
+########################
+# Functional roleとAccess roleを作成
+module "functional_and_access_roles" {
+  source = "./modules/roles"
+  providers = {
+    snowflake = snowflake.security_admin
+  }
+
+  access_db_roles                        = local.access_db_roles
+  access_roles                           = local.access_roles
+  grant_on_object_to_access_role         = local.grant_on_object_to_access_role
+  functional_roles                       = local.functional_roles
+  grant_access_roles_to_functional_roles = local.grant_access_role_to_functional_role
+  grant_functional_roles_to_user         = local.grant_functional_roles_to_user
 }

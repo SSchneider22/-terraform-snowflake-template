@@ -1,4 +1,4 @@
-access_roles:
+access_db_roles:
   - name: PRD_SCHEMA_A_READWRITE
     database: PRD_DB
     comment: 本番環境データベースで SCHEMA_A スキーマに対して読み書き可能
@@ -11,6 +11,7 @@ access_roles:
   - name: PRD_SCHEMA_B_READONLY
     database: PRD_DB
     comment: 本番環境データベースで SCHEMA_B スキーマに対して読み取り可能
+access_roles:
   - name: PRD_WAREHOUSE_USAGE
     database: PRD_DB
     comment: 本番環境用ウェアハウスを使用可能

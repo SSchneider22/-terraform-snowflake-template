@@ -4,9 +4,14 @@ variable "functional_roles" {
   description = "Functional roleリスト。[ {name: <role_name>, comment: <comment>},... ]"
 }
 
+variable "access_db_roles" {
+  type        = list(any)
+  description = "Access roleリスト。database roleのみ。[ {name: <role_name>, comment: <comment>},... ]"
+}
+
 variable "access_roles" {
   type        = list(any)
-  description = "Access roleリスト。[ {name: <role_name>, comment: <comment>},... ]"
+  description = "Access roleリスト。database role以外。[ {name: <role_name>, comment: <comment>},... ]"
 }
 
 variable "grant_on_object_to_access_role" {
