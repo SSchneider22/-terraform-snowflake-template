@@ -1,3 +1,4 @@
+# variables.tf の各 variable に渡されたロール情報を展開して、ロールを作ったり権限を付与したりしていきます。
 variable "functional_roles" {
   type        = list(any)
   description = "Functional roleリスト。[ {name: <role_name>, comment: <comment>},... ]"
