@@ -1,4 +1,8 @@
-# これは、かじやさんのコードがないので自分で作るしか無い。
-# resourceは「snowflake_grant_account_role」でいいので、grant_access_roles_to_functional_roles.tfが出来たらほぼ流用できるはず
+# Functional role を ユーザー に grant する
+resource "snowflake_grant_account_role" "functional_role_to_user_grants" {
+  for_each = { for item in var.grant_functional_roles_to_user : "${item.functional_role}-${item.user_name}" => item }
 
+  role_name = each.value.functional_role
+  user_name = each.value.user_name
 
+}

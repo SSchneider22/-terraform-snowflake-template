@@ -10,3 +10,7 @@ grant_functional_roles_to_user:
   - role_name: DEVELOPER_HOGE
     users:
       - SATOSHISAGARA
+      - TERRAFORM_USER
+  - role_name: ANALYST_HOGE
+    users:
+      - SATOSHISAGARA
