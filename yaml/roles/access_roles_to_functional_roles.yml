@@ -1,17 +1,22 @@
-grant_access_roles_to_functional_roles:
+grant_access_db_roles_to_functional_roles:
     - access_role: PRD_SCHEMA_A_READWRITE
+      database: PRD_DB
       functional_roles:
         - DEVELOPER_HOGE
     - access_role: PRD_SCHEMA_A_READONLY
+      database: PRD_DB
       functional_roles:
         - ANALYST_HOGE
     - access_role: PRD_SCHEMA_B_READWRITE
+      database: PRD_DB
       functional_roles:
         - DEVELOPER_HOGE
     - access_role: PRD_SCHEMA_B_READONLY
+      database: PRD_DB
       functional_roles:
         - ANALYST_HOGE
         - ANALYST_PIYO
+grant_access_roles_to_functional_roles:
     - access_role: PRD_WAREHOUSE_USAGE
       functional_roles:
         - DEVELOPER_HOGE

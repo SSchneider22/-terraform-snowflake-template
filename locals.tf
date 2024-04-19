@@ -34,6 +34,25 @@ locals {
   # grant Functional role to ユーザーのリスト
   grant_functional_roles_to_user = flatten(local.functional_roles_yml["grant_functional_roles_to_user"])
 
-  # grant Access role to Functional role のリスト
-  grant_access_role_to_functional_role = flatten(local.access_roles_to_functional_roles_yml["grant_access_roles_to_functional_roles"])
+  # grant Access role(database role以外) to Functional role のリスト
+  grant_access_role_to_functional_role = flatten([
+    for grant in local.access_roles_to_functional_roles_yml["grant_access_roles_to_functional_roles"] : [
+      for role in grant.functional_roles : {
+        access_role     = grant.access_role
+        functional_role = role
+      }
+    ]
+  ])
+
+  # grant Access role(database roleのみ) to Functional role のリスト
+  grant_access_db_role_to_functional_role = flatten([
+    for grant in local.access_roles_to_functional_roles_yml["grant_access_db_roles_to_functional_roles"] : [
+      for role in grant.functional_roles : {
+        access_role     = grant.access_role
+        database        = grant.database
+        functional_role = role
+      }
+    ]
+  ])
+
 }

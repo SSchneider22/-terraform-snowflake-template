@@ -21,7 +21,12 @@ variable "grant_on_object_to_access_role" {
 
 variable "grant_access_roles_to_functional_roles" {
   type        = list(any)
-  description = "Access role を付与する Functional role のリスト。[ {functional_roles: [<role_a>, <role_b>, ...], access_role: <role_name>},... ]"
+  description = "Access role(database role以外) を付与する Functional role のリスト。[ {functional_roles: [<role_a>, <role_b>, ...], access_role: <role_name>},... ]"
+}
+
+variable "grant_access_db_roles_to_functional_roles" {
+  type        = list(any)
+  description = "Access role(database roleのみ) を付与する Functional role のリスト。[ {functional_roles: [<role_a>, <role_b>, ...], access_role: <role_name>},... ]"
 }
 
 variable "grant_functional_roles_to_user" {
