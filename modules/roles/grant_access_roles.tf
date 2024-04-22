@@ -1,0 +1,15 @@
+resource "snowflake_grant_privileges_to_account_role" "grant_warehouse_to_access_role" {
+  for_each = {
+    for item in var.grant_on_object_to_access_role : "${item.grant_name}-${item.access_role}" => item
+    if item.type == "WAREHOUSE"
+  }
+
+  privileges        = each.value.parameter.privileges
+  account_role_name = each.value.access_role
+  on_account_object {
+    object_type = each.value.type
+    object_name = each.value.parameter.warehouse_name
+  }
+
+  depends_on = [snowflake_role.access_roles]
+}

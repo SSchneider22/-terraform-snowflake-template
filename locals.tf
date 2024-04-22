@@ -23,8 +23,22 @@ locals {
   # Access role(database roleのみ) のリスト
   access_db_roles = local.access_roles_yml.access_db_roles
 
-  # grant ... on objects to Access role のリスト
-  grant_on_object_to_access_role = flatten(local.access_roles_yml["grant_on_object_to_access_role"])
+  # grant ... on objects to Access role(database role以外) のリスト
+  # grant_on_object_to_access_role = flatten(local.access_roles_yml["grant_on_object_to_access_role"])
+  grant_on_object_to_access_role = flatten([
+    for grant in local.access_roles_yml["grant_on_object_to_access_roles"] : [
+      for role in grant.roles : {
+        type        = grant.type
+        parameter   = grant.parameter
+        access_role = role
+        grant_name  = grant.name
+      }
+    ]
+  ])
+
+
+  # grant ... on objects to Access role(database roleのみ) のリスト
+  grant_on_object_to_access_db_role = flatten(local.access_roles_yml["grant_on_object_to_access_db_role"])
 
   # Functional roleのリスト
   functional_roles = local.functional_roles_yml.functional_roles

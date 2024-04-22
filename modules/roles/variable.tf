@@ -16,7 +16,12 @@ variable "access_roles" {
 
 variable "grant_on_object_to_access_role" {
   type        = list(any)
-  description = "grant on ○○ を付与する Access role のリスト。[ {name: <name>, roles: [<role_name>], type: SCHEMA/FUTURE_TABLE/WAREHOUSE/etc., parameter: <parameter>},... ]"
+  description = "grant on ○○ を付与する Access role(database role以外) のリスト。[ {name: <name>, roles: [<role_name>], type: SCHEMA/FUTURE_TABLE/WAREHOUSE/etc., parameter: <parameter>},... ]"
+}
+
+variable "grant_on_object_to_access_db_role" {
+  type        = list(any)
+  description = "grant on ○○ を付与する Access role(database roleのみ) のリスト。[ {name: <name>, roles: [<role_name>], type: SCHEMA/FUTURE_TABLE/WAREHOUSE/etc., parameter: <parameter>},... ]"
 }
 
 variable "grant_access_roles_to_functional_roles" {
