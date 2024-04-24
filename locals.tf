@@ -47,6 +47,18 @@ locals {
     ]
   ])
 
+  # grant ... table to Access role のリスト
+  grant_table_to_access_db_role = flatten([
+    for grant in local.access_roles_yml["grant_table_to_access_db_roles"] : [
+      for role in grant.roles : {
+        type        = grant.type
+        parameter   = grant.parameter
+        access_role = role
+        grant_name  = grant.name
+      }
+    ]
+  ])
+
   # grant ... warehouse to Access role のリスト
   grant_warehouse_to_access_role = flatten([
     for grant in local.access_roles_yml["grant_warehouse_to_access_roles"] : [
