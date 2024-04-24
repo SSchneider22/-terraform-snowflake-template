@@ -11,7 +11,7 @@ resource "snowflake_grant_privileges_to_database_role" "grant_database_to_access
   on_database        = each.value.parameter.database_name
   all_privileges     = each.value.parameter.all_privileges == true ? each.value.parameter.all_privileges : null
 
-  depends_on = [snowflake_role.access_roles]
+  depends_on = [snowflake_database_role.access_db_roles]
 }
 
 
