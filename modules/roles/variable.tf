@@ -24,6 +24,11 @@ variable "grant_schema_to_access_db_role" {
   description = "grant on ○○ を付与する Access role(database roleのみ) のリスト。[ {name: <name>, roles: [<role_name>], type: SCHEMA/FUTURE_TABLE/WAREHOUSE/etc., parameter: <parameter>},... ]"
 }
 
+variable "grant_table_to_access_db_role" {
+  type        = list(any)
+  description = "grant on ○○ を付与する Access role(database roleのみ) のリスト。[ {name: <name>, roles: [<role_name>], type: SCHEMA/FUTURE_TABLE/WAREHOUSE/etc., parameter: <parameter>},... ]"
+}
+
 variable "grant_warehouse_to_access_role" {
   type        = list(any)
   description = "grant on ○○ を付与する Access role(database role以外) のリスト。[ {name: <name>, roles: [<role_name>], type: SCHEMA/FUTURE_TABLE/WAREHOUSE/etc., parameter: <parameter>},... ]"

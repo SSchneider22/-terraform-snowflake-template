@@ -1,3 +1,6 @@
+########################
+# access roleの一覧（database role）
+########################
 access_db_roles:
   - name: PRD_DB_READWRITE
     database: PRD_DB
@@ -17,6 +20,9 @@ access_db_roles:
   - name: PRD_SCHEMA_B_READONLY
     database: PRD_DB
     comment: 本番環境データベースで SCHEMA_B スキーマに対して読み取り可能
+########################
+# access roleの一覧（通常のロール）
+########################
 access_roles:
   - name: PRD_WAREHOUSE_USAGE
     comment: 本番環境用ウェアハウスを使用可能
@@ -33,6 +39,7 @@ grant_database_to_access_db_roles:
       all_privileges: false
       privileges:
         - USAGE
+        - MONITOR
     roles:
       - PRD_DB_READONLY
   - name: DATABASE_PRD_DB_READWRITE
@@ -56,6 +63,7 @@ grant_schema_to_access_db_roles:
       all_privileges: false
       privileges:
         - USAGE
+        - MONITOR
     roles:
       - PRD_SCHEMA_A_READONLY
   - name: SCHEMA_PRD_DB_SCHEMA_A_READWRITE
@@ -88,6 +96,51 @@ grant_schema_to_access_db_roles:
         - ALL # resource定義上は不要だが、localでリスト化するループ処理の関係上記載
     roles:
       - PRD_SCHEMA_B_READWRITE
+########################
+# スキーマ内の全テーブルに関するgrant ※ここで定義したものがall in schemaとfuture in schemaとしてgrantされる
+########################
+grant_table_to_access_db_roles:
+  - name: TABLE_PRD_DB_SCHEMA_A_READONLY
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      all_privileges: false
+      privileges:
+        - SELECT
+    roles:
+      - PRD_SCHEMA_A_READONLY
+  - name: TABLE_PRD_DB_SCHEMA_A_READWRITE
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      all_privileges: true
+      privileges:
+        - ALL # resource定義上は不要だが、localでリスト化するループ処理の関係上記載
+    roles:
+      - PRD_SCHEMA_A_READWRITE
+  - name: TABLE_PRD_DB_SCHEMA_B_READONLY
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_B
+      all_privileges: false
+      privileges:
+        - SELECT
+    roles:
+      - PRD_SCHEMA_B_READONLY
+  - name: TABLE_PRD_DB_SCHEMA_B_READWRITE
+    type: TABLE
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_B
+      all_privileges: true
+      privileges:
+        - ALL # resource定義上は不要だが、localでリスト化するループ処理の関係上記載
+    roles:
+      - PRD_SCHEMA_B_READWRITE
+
 ########################
 # ウェアハウスのgrant
 ########################
