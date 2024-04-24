@@ -22,7 +22,10 @@ access_roles:
     comment: 本番環境用ウェアハウスを使用可能
   - name: PRD_WAREHOUSE_MODIFY
     comment: 本番環境用ウェアハウスの設定を修正可能
-grant_on_object_to_access_db_roles:
+########################
+# データベースのgrant
+########################
+grant_database_to_access_db_roles:
   - name: DATABASE_PRD_DB_READONLY
     type: DATABASE
     parameter:
@@ -41,8 +44,54 @@ grant_on_object_to_access_db_roles:
         - ALL # resource定義上は不要だが、localでリスト化するループ処理の関係上記載
     roles:
       - PRD_DB_READWRITE
-
-grant_on_object_to_access_roles:
+########################
+# スキーマのgrant
+########################
+grant_schema_to_access_db_roles:
+  - name: SCHEMA_PRD_DB_SCHEMA_A_READONLY
+    type: SCHEMA
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      all_privileges: false
+      privileges:
+        - USAGE
+    roles:
+      - PRD_SCHEMA_A_READONLY
+  - name: SCHEMA_PRD_DB_SCHEMA_A_READWRITE
+    type: SCHEMA
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_A
+      all_privileges: true
+      privileges:
+        - ALL # resource定義上は不要だが、localでリスト化するループ処理の関係上記載
+    roles:
+      - PRD_SCHEMA_A_READWRITE
+  - name: SCHEMA_PRD_DB_SCHEMA_B_READONLY
+    type: SCHEMA
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_B
+      all_privileges: false
+      privileges:
+        - USAGE
+    roles:
+      - PRD_SCHEMA_B_READONLY
+  - name: SCHEMA_PRD_DB_SCHEMA_B_READWRITE
+    type: SCHEMA
+    parameter:
+      database_name: PRD_DB
+      schema_name: SCHEMA_B
+      all_privileges: true
+      privileges:
+        - ALL # resource定義上は不要だが、localでリスト化するループ処理の関係上記載
+    roles:
+      - PRD_SCHEMA_B_READWRITE
+########################
+# ウェアハウスのgrant
+########################
+grant_warehouse_to_access_roles:
   - name: WAREHOUSE_TD_DEMO_USAGE
     type: WAREHOUSE
     parameter:

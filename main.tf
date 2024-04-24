@@ -81,8 +81,9 @@ module "functional_and_access_roles" {
 
   access_db_roles                           = local.access_db_roles
   access_roles                              = local.access_roles
-  grant_on_object_to_access_role            = local.grant_on_object_to_access_role
-  grant_on_object_to_access_db_role         = local.grant_on_object_to_access_db_role
+  grant_warehouse_to_access_role            = local.grant_warehouse_to_access_role
+  grant_database_to_access_db_role          = local.grant_database_to_access_db_role
+  grant_schema_to_access_db_role            = local.grant_schema_to_access_db_role
   functional_roles                          = local.functional_roles
   grant_access_roles_to_functional_roles    = local.grant_access_role_to_functional_role
   grant_access_db_roles_to_functional_roles = local.grant_access_db_role_to_functional_role
