@@ -2,7 +2,6 @@
 resource "snowflake_grant_privileges_to_database_role" "grant_database_to_access_role" {
   for_each = {
     for item in var.grant_database_to_access_db_role : "${item.grant_name}-${item.access_role}" => item
-    if item.type == "DATABASE"
   }
 
   privileges         = each.value.parameter.all_privileges == true ? null : each.value.parameter.privileges
@@ -17,7 +16,6 @@ resource "snowflake_grant_privileges_to_database_role" "grant_database_to_access
 resource "snowflake_grant_privileges_to_database_role" "grant_schema_to_access_role" {
   for_each = {
     for item in var.grant_schema_to_access_db_role : "${item.grant_name}-${item.access_role}" => item
-    if item.type == "SCHEMA"
   }
 
   privileges         = each.value.parameter.all_privileges == true ? null : each.value.parameter.privileges
@@ -34,7 +32,6 @@ resource "snowflake_grant_privileges_to_database_role" "grant_schema_to_access_r
 resource "snowflake_grant_privileges_to_database_role" "grant_table_to_access_role_all" {
   for_each = {
     for item in var.grant_table_to_access_db_role : "${item.grant_name}-${item.access_role}" => item
-    if item.type == "TABLE"
   }
 
   privileges         = each.value.parameter.all_privileges == true ? null : each.value.parameter.privileges
@@ -54,7 +51,6 @@ resource "snowflake_grant_privileges_to_database_role" "grant_table_to_access_ro
 resource "snowflake_grant_privileges_to_database_role" "grant_table_to_access_role_future" {
   for_each = {
     for item in var.grant_table_to_access_db_role : "${item.grant_name}-${item.access_role}" => item
-    if item.type == "TABLE"
   }
 
   privileges         = each.value.parameter.all_privileges == true ? null : each.value.parameter.privileges
@@ -75,7 +71,6 @@ resource "snowflake_grant_privileges_to_database_role" "grant_table_to_access_ro
 resource "snowflake_grant_privileges_to_account_role" "grant_warehouse_to_access_role" {
   for_each = {
     for item in var.grant_warehouse_to_access_role : "${item.grant_name}-${item.access_role}" => item
-    if item.type == "WAREHOUSE"
   }
 
   privileges        = each.value.parameter.privileges
