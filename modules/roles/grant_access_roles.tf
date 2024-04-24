@@ -34,7 +34,7 @@ resource "snowflake_grant_privileges_to_database_role" "grant_schema_to_access_r
 # ウェアハウスをaccess roleにgrantする
 resource "snowflake_grant_privileges_to_account_role" "grant_warehouse_to_access_role" {
   for_each = {
-    for item in var.grant_on_object_to_access_role : "${item.grant_name}-${item.access_role}" => item
+    for item in var.grant_warehouse_to_access_role : "${item.grant_name}-${item.access_role}" => item
     if item.type == "WAREHOUSE"
   }
 
