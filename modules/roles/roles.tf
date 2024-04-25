@@ -2,7 +2,7 @@
 resource "snowflake_database_role" "access_db_roles" {
   provider = snowflake.sys_admin
   for_each = {
-    for role in local.access_db_roles :
+    for role in var.access_db_roles :
     role.name => role
   }
   database = each.value.database
@@ -14,7 +14,7 @@ resource "snowflake_database_role" "access_db_roles" {
 resource "snowflake_role" "access_roles" {
   provider = snowflake.security_admin
   for_each = {
-    for role in local.access_roles :
+    for role in var.access_roles :
     role.name => role.comment
   }
   name    = each.key
@@ -25,7 +25,7 @@ resource "snowflake_role" "access_roles" {
 resource "snowflake_role" "functional_roles" {
   provider = snowflake.security_admin
   for_each = {
-    for role in local.functional_roles :
+    for role in var.functional_roles :
     role.name => role.comment
   }
   name    = each.key
