@@ -74,7 +74,7 @@ resource "snowflake_table" "table_b1" {
 ########################
 # Functional roleとAccess roleを作成
 module "functional_and_access_roles" {
-  source = "./modules/roles"
+  source = "./modules/functional_and_access_roles"
   providers = {
     snowflake = snowflake.security_admin
   }
