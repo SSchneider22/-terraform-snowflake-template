@@ -6,15 +6,15 @@ locals {
 
   # 設定ファイルをロード
   access_roles_yml = yamldecode(
-    file("${path.root}/yaml/roles/access_roles.yml")
+    file("${path.root}/config/roles/access_roles.yml")
   )
 
   functional_roles_yml = yamldecode(
-    file("${path.root}/yaml/roles/functional_roles.yml")
+    file("${path.root}/config/roles/functional_roles.yml")
   )
 
   access_roles_to_functional_roles_yml = yamldecode(
-    file("${path.root}/yaml/roles/access_roles_to_functional_roles.yml")
+    file("${path.root}/config/roles/access_roles_to_functional_roles.yml")
   )
 
   # Access role(database role以外) のリスト
