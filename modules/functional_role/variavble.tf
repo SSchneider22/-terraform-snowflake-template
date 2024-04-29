@@ -5,7 +5,7 @@ variable "role_name" {
 }
 
 variable "comment" {
-  description = "Write description for the resource"
+  description = "Write description for the functional role"
   type        = string
   default     = null
 }
@@ -13,5 +13,5 @@ variable "comment" {
 variable "grant_user_set" {
   description = "Set of user for grant functional role"
   type        = set(string)
-  default     = null
+  default     = []
 }

@@ -114,7 +114,7 @@ module "analyst_sagara" {
   }
 
   name    = "ANALYST_SAGARA"
-  comment = "分析をするさがら"
+  comment = "Analyst sagara"
 }
 
 module "developer_sagara" {
@@ -124,7 +124,7 @@ module "developer_sagara" {
   }
 
   name    = "DEVELOPER_SAGARA"
-  comment = "開発をするさがら"
+  comment = "Developer sagara"
 }
 
 ########################
@@ -142,7 +142,7 @@ module "aaa_analyst_fr" {
     "ANALYST_SAGARA",
     "DEVELOPER_SAGARA"
   ]
-  comment = "プロジェクトAAAで分析を行うためのFunctional Role"
+  comment = "Functional Role for analysis in Project AAA"
 }
 
 module "aaa_developer_fr" {
@@ -155,6 +155,103 @@ module "aaa_developer_fr" {
   grant_user_set = [
     "DEVELOPER_SAGARA"
   ]
-  comment = "プロジェクトAAAで開発を行うためのFunctional Role"
+  comment = "Functional Role for develop in Project AAA"
 }
 
+module "bbb_analyst_fr" {
+  source = "./modules/functional_role"
+  providers = {
+    snowflake = snowflake.security_admin
+  }
+
+  role_name = "BBB_ANALYST_FR"
+  grant_user_set = [
+    "ANALYST_SAGARA",
+    "DEVELOPER_SAGARA"
+  ]
+  comment = "Functional Role for analysis in Project BBB"
+}
+
+module "bbb_developer_fr" {
+  source = "./modules/functional_role"
+  providers = {
+    snowflake = snowflake.security_admin
+  }
+
+  role_name = "BBB_DEVELOPER_FR"
+  grant_user_set = [
+    "DEVELOPER_SAGARA"
+  ]
+  comment = "Functional Role for develop in Project BBB"
+}
+
+########################
+# データベース
+########################
+module "raw_data" {
+  source = "./modules/access_role_and_database"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  database_name               = "RAW_DATA"
+  comment                     = "Database to store loaded raw data"
+  data_retention_time_in_days = 3
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name,
+    module.bbb_developer_fr.name
+  ]
+}
+
+module "staging" {
+  source = "./modules/access_role_and_database"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  database_name               = "STAGING"
+  comment                     = "Database to store data with minimal transformation from raw data"
+  data_retention_time_in_days = 1
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name,
+    module.bbb_developer_fr.name
+  ]
+}
+
+module "dwh" {
+  source = "./modules/access_role_and_database"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  database_name               = "DWH"
+  comment                     = "Database to store data on which various modeling has been done"
+  data_retention_time_in_days = 1
+  grant_readonly_ar_to_fr_set = [
+    module.aaa_analyst_fr.name,
+    module.bbb_analyst_fr.name
+  ]
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name,
+    module.bbb_developer_fr.name
+  ]
+}
+
+module "mart" {
+  source = "./modules/access_role_and_database"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  database_name               = "MART"
+  comment                     = "Database that stores data used for reporting and linkage to another tool"
+  data_retention_time_in_days = 1
+  grant_readonly_ar_to_fr_set = [
+    module.aaa_analyst_fr.name,
+    module.bbb_analyst_fr.name
+  ]
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name,
+    module.bbb_developer_fr.name
+  ]
+}
