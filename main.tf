@@ -90,3 +90,37 @@ module "functional_and_access_roles" {
   grant_access_db_roles_to_functional_roles = local.grant_access_db_role_to_functional_role
   grant_functional_roles_to_user            = local.grant_functional_roles_to_user
 }
+
+
+
+##################
+##################
+##################
+##################
+# ここから、新しいmoduleでの定義
+##################
+##################
+##################
+##################
+
+########################
+# ユーザー
+########################
+
+module "analyst_sagara" {
+  source = "./modules/user"
+  providers = {
+    snowflake = snowflake.security_admin
+  }
+
+  name = "ANALYST_SAGARA"
+}
+
+module "developer_sagara" {
+  source = "./modules/user"
+  providers = {
+    snowflake = snowflake.security_admin
+  }
+
+  name = "ANALYST_SAGARA"
+}
