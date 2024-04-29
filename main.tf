@@ -122,5 +122,5 @@ module "developer_sagara" {
     snowflake = snowflake.security_admin
   }
 
-  name = "ANALYST_SAGARA"
+  name = "DEVELOPER_SAGARA"
 }
