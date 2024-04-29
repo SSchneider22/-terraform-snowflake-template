@@ -57,7 +57,7 @@ resource "snowflake_grant_privileges_to_database_role" "grant_read_write" {
 resource "snowflake_grant_database_role" "grant_readwrite_ar_to_fr" {
   for_each = var.grant_readwrite_ar_to_fr_set
 
-  database_role_name = "\"${snowflake_database.this.name}\".\"${snowflake_database_role.read_only_ar.name}\""
+  database_role_name = "\"${snowflake_database.this.name}\".\"${snowflake_database_role.read_write_ar.name}\""
   parent_role_name   = each.value
 
   depends_on = [snowflake_database_role.read_write_ar]

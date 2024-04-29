@@ -188,7 +188,7 @@ module "bbb_developer_fr" {
 ########################
 # データベース
 ########################
-module "raw_data" {
+module "raw_data_db" {
   source = "./modules/access_role_and_database"
   providers = {
     snowflake = snowflake.sys_admin
@@ -203,7 +203,7 @@ module "raw_data" {
   ]
 }
 
-module "staging" {
+module "staging_db" {
   source = "./modules/access_role_and_database"
   providers = {
     snowflake = snowflake.sys_admin
@@ -218,7 +218,7 @@ module "staging" {
   ]
 }
 
-module "dwh" {
+module "dwh_db" {
   source = "./modules/access_role_and_database"
   providers = {
     snowflake = snowflake.sys_admin
@@ -237,7 +237,7 @@ module "dwh" {
   ]
 }
 
-module "mart" {
+module "mart_db" {
   source = "./modules/access_role_and_database"
   providers = {
     snowflake = snowflake.sys_admin
@@ -252,6 +252,141 @@ module "mart" {
   ]
   grant_readwrite_ar_to_fr_set = [
     module.aaa_developer_fr.name,
+    module.bbb_developer_fr.name
+  ]
+}
+
+########################
+# スキーマ
+########################
+module "raw_data_db_aaa_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "AAA"
+  database_name       = module.raw_data_db.name
+  comment             = "Schema to store loaded raw data of AAA"
+  data_retention_days = 3
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name
+  ]
+}
+
+module "raw_data_db_bbb_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "BBB"
+  database_name       = module.raw_data_db.name
+  comment             = "Schema to store loaded raw data of BBB"
+  data_retention_days = 3
+  grant_readwrite_ar_to_fr_set = [
+    module.bbb_developer_fr.name
+  ]
+}
+
+module "staging_db_aaa_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "AAA"
+  database_name       = module.staging_db.name
+  comment             = "Schema to store data with minimal transformation from raw data of AAA"
+  data_retention_days = 1
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name
+  ]
+}
+
+module "staging_db_bbb_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "BBB"
+  database_name       = module.staging_db.name
+  comment             = "Schema to store data with minimal transformation from raw data of BBB"
+  data_retention_days = 1
+  grant_readwrite_ar_to_fr_set = [
+    module.bbb_developer_fr.name
+  ]
+}
+
+module "dwh_db_aaa_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "AAA"
+  database_name       = module.dwh_db.name
+  comment             = "Schema to store data on which various modeling has been done for AAA"
+  data_retention_days = 1
+  grant_readonly_ar_to_fr_set = [
+    module.aaa_analyst_fr.name
+  ]
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name
+  ]
+}
+
+module "dwh_db_bbb_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "BBB"
+  database_name       = module.dwh_db.name
+  comment             = "Schema to store data on which various modeling has been done for BBB"
+  data_retention_days = 1
+  grant_readonly_ar_to_fr_set = [
+    module.bbb_analyst_fr.name
+  ]
+  grant_readwrite_ar_to_fr_set = [
+    module.bbb_developer_fr.name
+  ]
+}
+
+module "mart_db_aaa_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "AAA"
+  database_name       = module.mart_db.name
+  comment             = "Schema that stores data used for reporting and linkage to another tool for AAA"
+  data_retention_days = 1
+  grant_readonly_ar_to_fr_set = [
+    module.aaa_analyst_fr.name
+  ]
+  grant_readwrite_ar_to_fr_set = [
+    module.aaa_developer_fr.name
+  ]
+}
+
+module "mart_db_bbb_schema" {
+  source = "./modules/access_role_and_schema"
+  providers = {
+    snowflake = snowflake.sys_admin
+  }
+
+  schema_name         = "BBB"
+  database_name       = module.mart_db.name
+  comment             = "Schema that stores data used for reporting and linkage to another tool for BBB"
+  data_retention_days = 1
+  grant_readonly_ar_to_fr_set = [
+    module.bbb_analyst_fr.name
+  ]
+  grant_readwrite_ar_to_fr_set = [
     module.bbb_developer_fr.name
   ]
 }
