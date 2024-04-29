@@ -10,8 +10,8 @@ resource "snowflake_database" "this" {
 # 対象のデータベースに対するRead OnlyのAccess Roleを作成
 resource "snowflake_database_role" "read_only_ar" {
   database = snowflake_database.this.name
-  name     = "_DATABASE_${var.database_name}_RO_AR"
-  comment  = "Read only role of ${var.database_name}"
+  name     = "_DATABASE_${snowflake_database.this.name}_RO_AR"
+  comment  = "Read only role of ${snowflake_database.this.name}"
 
   depends_on = [snowflake_database.this]
 }
@@ -38,8 +38,8 @@ resource "snowflake_grant_database_role" "grant_readonly_ar_to_fr" {
 # 対象のデータベースに対するRead/WriteのAccess Roleを作成
 resource "snowflake_database_role" "read_write_ar" {
   database = snowflake_database.this.name
-  name     = "_DATABASE_${var.database_name}_RW_AR"
-  comment  = "Read/Write role of ${var.database_name}"
+  name     = "_DATABASE_${snowflake_database.this.name}_RW_AR"
+  comment  = "Read/Write role of ${snowflake_database.this.name}"
 
   depends_on = [snowflake_database.this]
 }
