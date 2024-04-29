@@ -113,7 +113,8 @@ module "analyst_sagara" {
     snowflake = snowflake.security_admin
   }
 
-  name = "ANALYST_SAGARA"
+  name    = "ANALYST_SAGARA"
+  comment = "分析をするさがら"
 }
 
 module "developer_sagara" {
@@ -122,5 +123,38 @@ module "developer_sagara" {
     snowflake = snowflake.security_admin
   }
 
-  name = "DEVELOPER_SAGARA"
+  name    = "DEVELOPER_SAGARA"
+  comment = "開発をするさがら"
 }
+
+########################
+# Functional Role
+########################
+
+module "aaa_analyst_fr" {
+  source = "./modules/functional_role"
+  providers = {
+    snowflake = snowflake.security_admin
+  }
+
+  role_name = "AAA_ANALYST_FR"
+  grant_user_set = [
+    "ANALYST_SAGARA",
+    "DEVELOPER_SAGARA"
+  ]
+  comment = "プロジェクトAAAで分析を行うためのFunctional Role"
+}
+
+module "aaa_developer_fr" {
+  source = "./modules/functional_role"
+  providers = {
+    snowflake = snowflake.security_admin
+  }
+
+  role_name = "AAA_DEVELOPER_FR"
+  grant_user_set = [
+    "DEVELOPER_SAGARA"
+  ]
+  comment = "プロジェクトAAAで開発を行うためのFunctional Role"
+}
+
