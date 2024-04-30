@@ -3,7 +3,7 @@
 ########################
 
 resource "snowflake_warehouse" "warehouse" {
-  provider       = snowflake.sys_admin
+  provider       = snowflake.terraform
   name           = "TF_DEMO"
   warehouse_size = "xsmall"
   auto_suspend   = 120
@@ -14,7 +14,7 @@ resource "snowflake_warehouse" "warehouse" {
 ########################
 
 resource "snowflake_database" "prd_db" {
-  provider = snowflake.sys_admin
+  provider = snowflake.terraform
   name     = "PRD_DB"
 }
 
@@ -23,14 +23,14 @@ resource "snowflake_database" "prd_db" {
 ########################
 
 resource "snowflake_schema" "schema_a" {
-  provider   = snowflake.sys_admin
+  provider   = snowflake.terraform
   database   = "PRD_DB"
   name       = "SCHEMA_A"
   depends_on = [snowflake_database.prd_db]
 }
 
 resource "snowflake_schema" "schema_b" {
-  provider   = snowflake.sys_admin
+  provider   = snowflake.terraform
   database   = "PRD_DB"
   name       = "SCHEMA_B"
   depends_on = [snowflake_database.prd_db]
@@ -191,7 +191,7 @@ module "bbb_developer_fr" {
 module "raw_data_db" {
   source = "./modules/access_role_and_database"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   database_name               = "RAW_DATA"
@@ -206,7 +206,7 @@ module "raw_data_db" {
 module "staging_db" {
   source = "./modules/access_role_and_database"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   database_name               = "STAGING"
@@ -221,7 +221,7 @@ module "staging_db" {
 module "dwh_db" {
   source = "./modules/access_role_and_database"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   database_name               = "DWH"
@@ -240,7 +240,7 @@ module "dwh_db" {
 module "mart_db" {
   source = "./modules/access_role_and_database"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   database_name               = "MART"
@@ -262,7 +262,7 @@ module "mart_db" {
 module "raw_data_db_aaa_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "AAA"
@@ -277,7 +277,7 @@ module "raw_data_db_aaa_schema" {
 module "raw_data_db_bbb_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "BBB"
@@ -292,7 +292,7 @@ module "raw_data_db_bbb_schema" {
 module "staging_db_aaa_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "AAA"
@@ -307,7 +307,7 @@ module "staging_db_aaa_schema" {
 module "staging_db_bbb_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "BBB"
@@ -322,7 +322,7 @@ module "staging_db_bbb_schema" {
 module "dwh_db_aaa_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "AAA"
@@ -340,7 +340,7 @@ module "dwh_db_aaa_schema" {
 module "dwh_db_bbb_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "BBB"
@@ -358,7 +358,7 @@ module "dwh_db_bbb_schema" {
 module "mart_db_aaa_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "AAA"
@@ -376,7 +376,7 @@ module "mart_db_aaa_schema" {
 module "mart_db_bbb_schema" {
   source = "./modules/access_role_and_schema"
   providers = {
-    snowflake = snowflake.sys_admin
+    snowflake = snowflake.terraform
   }
 
   schema_name         = "BBB"
@@ -388,5 +388,26 @@ module "mart_db_bbb_schema" {
   ]
   grant_readwrite_ar_to_fr_set = [
     module.bbb_developer_fr.name
+  ]
+}
+
+########################
+# ウェアハウス
+########################
+module "aaa_analyse_wh" {
+  source = "./modules/access_role_and_warehouse"
+  providers = {
+    snowflake = snowflake.terraform
+  }
+
+  warehouse_name = "AAA_ANALYSE_WH"
+  warehouse_size = "XSMALL"
+  comment        = "Warehouse for analysis of AAA projects"
+
+  grant_usage_ar_to_fr_set = [
+    module.aaa_analyst_fr.name
+  ]
+  grant_admin_ar_to_fr_set = [
+    module.aaa_developer_fr.name
   ]
 }
