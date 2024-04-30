@@ -1,4 +1,4 @@
 output "name" {
   description = "Name of the user."
-  value       = snowflake_user.this.name
+  value       = var.name # snowflake_user.this.nameだとsensitiveで他moduleに渡せないため
 }

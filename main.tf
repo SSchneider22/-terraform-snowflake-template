@@ -34,8 +34,8 @@ module "aaa_analyst_fr" {
 
   role_name = "AAA_ANALYST_FR"
   grant_user_set = [
-    "ANALYST_SAGARA",
-    "DEVELOPER_SAGARA"
+    module.analyst_sagara.name,
+    module.developer_sagara.name
   ]
   comment = "Functional Role for analysis in Project AAA"
 }
@@ -48,7 +48,7 @@ module "aaa_developer_fr" {
 
   role_name = "AAA_DEVELOPER_FR"
   grant_user_set = [
-    "DEVELOPER_SAGARA"
+    module.developer_sagara.name
   ]
   comment = "Functional Role for develop in Project AAA"
 }
@@ -61,8 +61,8 @@ module "bbb_analyst_fr" {
 
   role_name = "BBB_ANALYST_FR"
   grant_user_set = [
-    "ANALYST_SAGARA",
-    "DEVELOPER_SAGARA"
+    module.analyst_sagara.name,
+    module.developer_sagara.name
   ]
   comment = "Functional Role for analysis in Project BBB"
 }
@@ -75,7 +75,7 @@ module "bbb_developer_fr" {
 
   role_name = "BBB_DEVELOPER_FR"
   grant_user_set = [
-    "DEVELOPER_SAGARA"
+    module.developer_sagara.name
   ]
   comment = "Functional Role for develop in Project BBB"
 }
