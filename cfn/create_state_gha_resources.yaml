@@ -7,18 +7,40 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Setup for GitHub Actions with OIDC, including S3, DynamoDB, and IAM Role'
 
+Parameters:
+  S3BucketName:
+    Type: String
+    Default: sagara-terraform-state-bucket
+    Description: Bucket name for state file
+  DynamoDBTableName:
+    Type: String
+    Default: sagara-terraform-state-lock-table
+    Description: Table for state lock
+  GitHubAccountName:
+    Type: String
+    Default: SSchneider22
+    Description: GitHub account name of the repository
+  GitHubRemoteRepoName:
+    Type: String
+    Default: terraform-snowflake-practice
+    Description: Repository name of terraform
+  PolicyName:
+    Type: String
+    Default: SagaraGitHubActionsPolicy
+    Description: Policy for GitHub Actions
+
 Resources:
   # S3 Bucket for Terraform state
   TerraformStateBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: sagara-terraform-state-bucket
+      BucketName: Ref! S3BucketName
 
   # DynamoDB Table for Terraform state lock
   TerraformStateLockTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: sagara-terraform-state-lock-table
+      TableName: Ref! DynamoDBTableName
       AttributeDefinitions:
         - AttributeName: LockID
           AttributeType: S
@@ -53,9 +75,9 @@ Resources:
               StringEquals:
                 token.actions.githubusercontent.com:aud: "sts.amazonaws.com"
               StringLike:
-                token.actions.githubusercontent.com:sub: "repo:SSchneider22/terraform-snowflake-practice:*"
+                token.actions.githubusercontent.com:sub: "repo:${GitHubAccountName}/${GitHubRemoteRepoName}:*"
       Policies:
-        - PolicyName: SagaraTerraformGitHubActionsPolicy
+        - PolicyName: Ref! PolicyName
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
