@@ -34,13 +34,13 @@ Resources:
   TerraformStateBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: Ref! S3BucketName
+      BucketName: !Ref S3BucketName
 
   # DynamoDB Table for Terraform state lock
   TerraformStateLockTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: Ref! DynamoDBTableName
+      TableName: !Ref DynamoDBTableName
       AttributeDefinitions:
         - AttributeName: LockID
           AttributeType: S
@@ -77,7 +77,7 @@ Resources:
               StringLike:
                 token.actions.githubusercontent.com:sub: "repo:${GitHubAccountName}/${GitHubRemoteRepoName}:*"
       Policies:
-        - PolicyName: Ref! PolicyName
+        - PolicyName: !Ref PolicyName
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
