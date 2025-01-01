@@ -1,1 +1,1 @@
-# terraform-snowflake-practice
+# terraform-snowflake-template
