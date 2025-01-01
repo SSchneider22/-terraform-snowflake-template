@@ -1,9 +1,3 @@
-## 実行する際に変更するところ
-# S3のバケット名：sagara-terraform-state-bucket-name
-# DynamoDBのテーブル名：sagara-terraform-state-lock-table
-# ブランチ名："repo:SSchneider22/terraform-snowflake-practice:*"
-# Policy名：SagaraGitHubActionsPolicy
-
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Setup for GitHub Actions with OIDC, including S3, DynamoDB, and IAM Role'
 
@@ -22,7 +16,7 @@ Parameters:
     Description: GitHub account name of the repository
   GitHubRemoteRepoName:
     Type: String
-    Default: terraform-snowflake-practice
+    Default: terraform-snowflake-template
     Description: Repository name of terraform
   PolicyName:
     Type: String
